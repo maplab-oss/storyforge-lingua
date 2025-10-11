@@ -3,16 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { languages } from "@/lib/mockData";
 import { useNavigate } from "react-router-dom";
 
-interface LanguagesProps {
-  onLanguageChange: (languageId: string) => void;
-}
-
-export default function Languages({ onLanguageChange }: LanguagesProps) {
+export default function Languages() {
   const navigate = useNavigate();
 
   const handleLanguageClick = (languageId: string) => {
-    onLanguageChange(languageId);
-    navigate("/stories");
+    navigate(`/languages/${languageId}`);
   };
   return (
     <div className="space-y-6">

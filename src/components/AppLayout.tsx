@@ -78,7 +78,7 @@ interface AppLayoutProps {
 
 export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppLayoutProps) => {
   const location = useLocation();
-  const showLanguageSwitcher = location.pathname !== "/";
+  const showLanguageSwitcher = location.pathname !== "/" && !location.pathname.startsWith("/languages/");
 
   return (
     <SidebarProvider>

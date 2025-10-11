@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Stories from "./pages/Stories";
 import Characters from "./pages/Characters";
 import Words from "./pages/Words";
+import LanguageDetail from "./pages/LanguageDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +25,8 @@ const App = () => {
         <BrowserRouter>
           <AppLayout selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage}>
             <Routes>
-              <Route path="/" element={<Index onLanguageChange={setSelectedLanguage} />} />
+              <Route path="/" element={<Index />} />
+              <Route path="/languages/:languageId" element={<LanguageDetail />} />
               <Route path="/stories" element={<Stories selectedLanguage={selectedLanguage} />} />
               <Route path="/characters" element={<Characters selectedLanguage={selectedLanguage} />} />
               <Route path="/words" element={<Words selectedLanguage={selectedLanguage} />} />
