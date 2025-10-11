@@ -4,15 +4,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowLeft, Plus, Lightbulb } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Plus, Lightbulb, Pencil } from "lucide-react";
 import { languages, stories, characters, characterIdeas, words } from "@/lib/mockData";
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 export default function LanguageDetail() {
   const { languageId } = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [editingCharacter, setEditingCharacter] = useState<{ id: string; name: string } | null>(null);
+  const [characterName, setCharacterName] = useState("");
   
   const language = languages.find(lang => lang.code === languageId);
   const filteredStories = stories.filter(story => story.language === languageId);
@@ -37,6 +41,20 @@ export default function LanguageDetail() {
       </div>
     );
   }
+
+  const handleEditCharacter = (character: { id: string; name: string }) => {
+    setEditingCharacter(character);
+    setCharacterName(character.name);
+  };
+
+  const handleSaveCharacter = () => {
+    // In a real app, this would save to a database
+    toast({
+      title: "Character updated",
+      description: `Character name changed to "${characterName}"`,
+    });
+    setEditingCharacter(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -69,7 +87,11 @@ export default function LanguageDetail() {
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredStories.map((story) => (
-              <Card key={story.id} className="hover:shadow-lg transition-shadow">
+              <Card 
+                key={story.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate(`/languages/${languageId}/stories/${story.id}`)}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-lg">{story.title}</CardTitle>
@@ -108,7 +130,16 @@ export default function LanguageDetail() {
             {filteredCharacters.map((character) => (
               <Card key={character.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle>{character.name}</CardTitle>
+                  <div className="flex items-start justify-between">
+                    <CardTitle>{character.name}</CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleEditCharacter({ id: character.id, name: character.name })}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  </div>
                   <CardDescription>
                     <Badge variant="outline" className="w-fit">{character.type}</Badge>
                   </CardDescription>
@@ -179,81 +210,53 @@ export default function LanguageDetail() {
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredWords.map((word) => (
-              <Dialog key={word.id}>
-                <DialogTrigger asChild>
-                  <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <CardTitle className="text-xl">{word.word}</CardTitle>
-                      <CardDescription>{word.translation}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2 text-sm">
-                        {word.transliteration && (
-                          <p className="text-muted-foreground italic">{word.transliteration}</p>
-                        )}
-                        <Badge variant="outline">{word.partOfSpeech}</Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl">{word.word}</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-1">Translation</h4>
-                      <p>{word.translation}</p>
-                    </div>
+              <Card 
+                key={word.id} 
+                className="cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => navigate(`/languages/${languageId}/words/${word.id}`)}
+              >
+                <CardHeader>
+                  <CardTitle className="text-xl">{word.word}</CardTitle>
+                  <CardDescription>{word.translation}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm">
                     {word.transliteration && (
-                      <div>
-                        <h4 className="font-semibold mb-1">Transliteration</h4>
-                        <p className="italic">{word.transliteration}</p>
-                      </div>
+                      <p className="text-muted-foreground italic">{word.transliteration}</p>
                     )}
-                    <div>
-                      <h4 className="font-semibold mb-1">Part of Speech</h4>
-                      <Badge variant="outline">{word.partOfSpeech}</Badge>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Rank</h4>
-                      <p>{word.rank}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Tags</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {word.tags.map((tag, i) => (
-                          <Badge key={i} variant="secondary">{tag}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                    {word.notes && (
-                      <div>
-                        <h4 className="font-semibold mb-1">Notes</h4>
-                        <p className="text-sm text-muted-foreground">{word.notes}</p>
-                      </div>
-                    )}
-                    <div>
-                      <h4 className="font-semibold mb-1">Data Sources</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {word.dataSources.map((source, i) => (
-                          <Badge key={i} variant="outline">{source}</Badge>
-                        ))}
-                      </div>
-                    </div>
-                    {word.feedback && (
-                      <div>
-                        <h4 className="font-semibold mb-1">Feedback</h4>
-                        <p className="text-sm">{word.feedback}</p>
-                      </div>
-                    )}
+                    <Badge variant="outline">{word.partOfSpeech}</Badge>
                   </div>
-                </DialogContent>
-              </Dialog>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={!!editingCharacter} onOpenChange={(open) => !open && setEditingCharacter(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Character Name</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="characterName">Name</Label>
+              <Input
+                id="characterName"
+                value={characterName}
+                onChange={(e) => setCharacterName(e.target.value)}
+                placeholder="Enter character name"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingCharacter(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveCharacter}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
