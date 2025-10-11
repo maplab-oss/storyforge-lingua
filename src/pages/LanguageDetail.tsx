@@ -14,7 +14,7 @@ export default function LanguageDetail() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   
-  const language = languages.find(lang => lang.id === languageId);
+  const language = languages.find(lang => lang.code === languageId);
   const filteredStories = stories.filter(story => story.language === languageId);
   const filteredCharacters = characters.filter(char => char.language === languageId);
   const filteredCharacterIdeas = characterIdeas.filter(idea => idea.language === languageId);

@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 export default function Languages() {
   const navigate = useNavigate();
 
-  const handleLanguageClick = (languageId: string) => {
-    navigate(`/languages/${languageId}`);
+  const handleLanguageClick = (languageCode: string) => {
+    navigate(`/languages/${languageCode}`);
   };
   return (
     <div className="space-y-6">
@@ -21,7 +21,7 @@ export default function Languages() {
           <Card 
             key={lang.id} 
             className="hover:shadow-lg transition-all cursor-pointer hover:scale-105"
-            onClick={() => handleLanguageClick(lang.id)}
+            onClick={() => handleLanguageClick(lang.code)}
           >
             <CardHeader>
               <div className="flex items-start justify-between">
