@@ -1,4 +1,5 @@
 import { Plus, Lightbulb } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,8 @@ interface CharactersProps {
 }
 
 export default function Characters({ selectedLanguage }: CharactersProps) {
+  const navigate = useNavigate();
+  
   const filteredCharacters = selectedLanguage === 'all' 
     ? characters 
     : characters.filter(c => c.language === selectedLanguage);
@@ -40,7 +43,11 @@ export default function Characters({ selectedLanguage }: CharactersProps) {
 
         <TabsContent value="active" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredCharacters.map((character) => (
-            <Card key={character.id} className="hover:shadow-md transition-shadow">
+            <Card 
+              key={character.id} 
+              className="hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(`/languages/${character.language}/characters/${character.id}`)}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>

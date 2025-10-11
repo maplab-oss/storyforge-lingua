@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, Lightbulb } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,8 @@ interface StoriesProps {
 }
 
 export default function Stories({ selectedLanguage }: StoriesProps) {
+  const navigate = useNavigate();
+  
   const filteredStories = selectedLanguage === 'all' 
     ? stories 
     : stories.filter(s => s.language === selectedLanguage);
@@ -41,7 +44,11 @@ export default function Stories({ selectedLanguage }: StoriesProps) {
 
         <TabsContent value="published" className="space-y-4">
           {filteredStories.filter(s => s.status === 'published').map((story) => (
-            <Card key={story.id} className="hover:shadow-md transition-shadow">
+            <Card 
+              key={story.id} 
+              className="hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(`/languages/${story.language}/stories/${story.id}`)}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
@@ -61,7 +68,11 @@ export default function Stories({ selectedLanguage }: StoriesProps) {
 
         <TabsContent value="draft" className="space-y-4">
           {filteredStories.filter(s => s.status === 'draft').map((story) => (
-            <Card key={story.id} className="hover:shadow-md transition-shadow">
+            <Card 
+              key={story.id} 
+              className="hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(`/languages/${story.language}/stories/${story.id}`)}
+            >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>

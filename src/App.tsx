@@ -12,6 +12,7 @@ import Words from "./pages/Words";
 import LanguageDetail from "./pages/LanguageDetail";
 import StoryDetail from "./pages/StoryDetail";
 import WordDetail from "./pages/WordDetail";
+import CharacterDetail from "./pages/CharacterDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/languages/:languageId" element={<LanguageDetail />} />
               <Route path="/languages/:languageId/stories/:storyId" element={<StoryDetail />} />
               <Route path="/languages/:languageId/words/:wordId" element={<WordDetail />} />
+              <Route path="/languages/:languageId/characters/:characterId" element={<CharacterDetail />} />
               <Route path="/stories" element={<Stories selectedLanguage={selectedLanguage} />} />
               <Route path="/characters" element={<Characters selectedLanguage={selectedLanguage} />} />
               <Route path="/words" element={<Words selectedLanguage={selectedLanguage} />} />
