@@ -5,7 +5,8 @@ import {
   Users, 
   Languages, 
   Database,
-  Menu
+  Menu,
+  LogOut
 } from "lucide-react";
 import {
   Sidebar,
@@ -20,7 +21,9 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
 
 const menuItems = [
   { title: "Languages", url: "/", icon: Languages },
@@ -78,6 +81,7 @@ interface AppLayoutProps {
 
 export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppLayoutProps) => {
   const location = useLocation();
+  const { user, logout } = useAuth();
   const showLanguageSwitcher = location.pathname !== "/" && !location.pathname.startsWith("/languages/");
 
   return (
@@ -87,12 +91,23 @@ export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppL
         <div className="flex-1 flex flex-col">
           <header className="h-16 border-b border-border bg-card flex items-center justify-between px-6">
             <SidebarTrigger />
-            {showLanguageSwitcher && (
-              <LanguageSwitcher 
-                selectedLanguage={selectedLanguage} 
-                onLanguageChange={onLanguageChange} 
-              />
-            )}
+            <div className="flex items-center gap-4">
+              {showLanguageSwitcher && (
+                <LanguageSwitcher 
+                  selectedLanguage={selectedLanguage} 
+                  onLanguageChange={onLanguageChange} 
+                />
+              )}
+              {user && (
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-muted-foreground">{user.name}</span>
+                  <Button variant="ghost" size="sm" onClick={logout} className="gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                </div>
+              )}
+            </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">
             {children}
