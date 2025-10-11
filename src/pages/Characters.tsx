@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { characters, characterIdeas } from "@/lib/mockData";
 
@@ -49,10 +50,14 @@ export default function Characters({ selectedLanguage }: CharactersProps) {
               onClick={() => navigate(`/languages/${character.language}/characters/${character.id}`)}
             >
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle>{character.name}</CardTitle>
-                    <CardDescription className="mt-2">
+                <div className="flex items-start justify-between gap-3">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={character.avatar} alt={character.name} />
+                    <AvatarFallback>{character.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <CardTitle className="text-lg">{character.name}</CardTitle>
+                    <CardDescription className="mt-1">
                       <span className="uppercase text-xs font-semibold">{character.language}</span>
                     </CardDescription>
                   </div>
