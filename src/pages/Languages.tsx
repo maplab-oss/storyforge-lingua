@@ -1,8 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { languages } from "@/lib/mockData";
+import { useNavigate } from "react-router-dom";
 
-export default function Languages() {
+interface LanguagesProps {
+  onLanguageChange: (languageId: string) => void;
+}
+
+export default function Languages({ onLanguageChange }: LanguagesProps) {
+  const navigate = useNavigate();
+
+  const handleLanguageClick = (languageId: string) => {
+    onLanguageChange(languageId);
+    navigate("/stories");
+  };
   return (
     <div className="space-y-6">
       <div>
@@ -12,7 +23,11 @@ export default function Languages() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {languages.map((lang) => (
-          <Card key={lang.id} className="hover:shadow-lg transition-shadow">
+          <Card 
+            key={lang.id} 
+            className="hover:shadow-lg transition-all cursor-pointer hover:scale-105"
+            onClick={() => handleLanguageClick(lang.id)}
+          >
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div>

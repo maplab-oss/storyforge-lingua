@@ -24,7 +24,7 @@ const App = () => {
         <BrowserRouter>
           <AppLayout selectedLanguage={selectedLanguage} onLanguageChange={setSelectedLanguage}>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<Index onLanguageChange={setSelectedLanguage} />} />
               <Route path="/stories" element={<Stories selectedLanguage={selectedLanguage} />} />
               <Route path="/characters" element={<Characters selectedLanguage={selectedLanguage} />} />
               <Route path="/words" element={<Words selectedLanguage={selectedLanguage} />} />

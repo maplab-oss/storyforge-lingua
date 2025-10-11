@@ -1,3 +1,9 @@
 import Languages from "./Languages";
 
-export default Languages;
+interface IndexProps {
+  onLanguageChange: (languageId: string) => void;
+}
+
+export default function Index({ onLanguageChange }: IndexProps) {
+  return <Languages onLanguageChange={onLanguageChange} />;
+}
