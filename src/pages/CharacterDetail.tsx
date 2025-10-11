@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Upload } from "lucide-react";
+import { ArrowLeft, Save, Upload, Archive, ArchiveRestore } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,8 +18,8 @@ export default function CharacterDetail() {
   const character = characters.find(c => c.id === characterId && c.language === languageId);
   
   const [name, setName] = useState(character?.name || '');
-  const [type, setType] = useState(character?.type || '');
   const [avatar, setAvatar] = useState(character?.avatar || '');
+  const [status, setStatus] = useState(character?.status || 'active');
   
   if (!character) {
     return (
@@ -51,6 +51,15 @@ export default function CharacterDetail() {
     }
   };
 
+  const handleToggleStatus = () => {
+    const newStatus = status === 'active' ? 'archived' : 'active';
+    setStatus(newStatus);
+    toast({
+      title: status === 'active' ? "Character archived" : "Character restored",
+      description: `Character has been ${status === 'active' ? 'moved to archive' : 'restored to active'}.`,
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -58,10 +67,29 @@ export default function CharacterDetail() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
-        <Button onClick={handleSave} className="gap-2">
-          <Save className="h-4 w-4" />
-          Save Changes
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleToggleStatus}
+            className="gap-2"
+          >
+            {status === 'active' ? (
+              <>
+                <Archive className="h-4 w-4" />
+                Archive
+              </>
+            ) : (
+              <>
+                <ArchiveRestore className="h-4 w-4" />
+                Restore
+              </>
+            )}
+          </Button>
+          <Button onClick={handleSave} className="gap-2">
+            <Save className="h-4 w-4" />
+            Save Changes
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-6">
@@ -115,26 +143,12 @@ export default function CharacterDetail() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
-                <Input 
-                  id="type" 
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Status</Label>
-              <div className="flex items-center h-10 px-3 rounded-md border bg-muted">
-                <Badge variant="outline">{character.status}</Badge>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Stories Featured In</Label>
-              <div className="flex items-center h-10 px-3 rounded-md border bg-muted">
-                <span className="text-sm">{character.stories} stories</span>
+                <Label>Status</Label>
+                <div className="flex items-center h-10 px-3 rounded-md border bg-muted">
+                  <Badge variant={status === 'active' ? 'default' : 'secondary'}>
+                    {status}
+                  </Badge>
+                </div>
               </div>
             </div>
 

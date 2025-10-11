@@ -37,18 +37,18 @@ export const storyIdeas = [
 ];
 
 export const characters = [
-  { id: '1', name: 'María González', language: 'es', type: 'main', stories: 12, status: 'active', createdAt: '2024-01-10', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria' },
-  { id: '2', name: 'Carlos Ruiz', language: 'es', type: 'supporting', stories: 8, status: 'active', createdAt: '2024-01-12', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos' },
-  { id: '3', name: 'Ana López', language: 'es', type: 'main', stories: 9, status: 'active', createdAt: '2024-01-14', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana' },
-  { id: '4', name: 'Sophie Dubois', language: 'fr', type: 'main', stories: 15, status: 'active', createdAt: '2024-01-08', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie' },
-  { id: '5', name: 'Pierre Martin', language: 'fr', type: 'supporting', stories: 11, status: 'active', createdAt: '2024-01-11', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pierre' },
-  { id: '6', name: 'Hans Müller', language: 'de', type: 'main', stories: 6, status: 'active', createdAt: '2024-01-13', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hans' },
-  { id: '7', name: 'Anna Schmidt', language: 'de', type: 'supporting', stories: 4, status: 'active', createdAt: '2024-01-15', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna' },
-  { id: '8', name: 'Marco Rossi', language: 'it', type: 'main', stories: 10, status: 'active', createdAt: '2024-01-09', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marco' },
-  { id: '9', name: 'Giulia Bianchi', language: 'it', type: 'main', stories: 8, status: 'active', createdAt: '2024-01-12', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Giulia' },
-  { id: '10', name: 'João Silva', language: 'pt', type: 'main', stories: 7, status: 'active', createdAt: '2024-01-11', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Joao' },
-  { id: '11', name: 'Maria Santos', language: 'pt', type: 'supporting', stories: 5, status: 'active', createdAt: '2024-01-14', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSantos' },
-  { id: '12', name: 'Yuki Tanaka', language: 'ja', type: 'main', stories: 4, status: 'active', createdAt: '2024-01-16', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Yuki' },
+  { id: '1', name: 'María González', language: 'es', status: 'active', createdAt: '2024-01-10', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria' },
+  { id: '2', name: 'Carlos Ruiz', language: 'es', status: 'active', createdAt: '2024-01-12', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos' },
+  { id: '3', name: 'Ana López', language: 'es', status: 'archived', createdAt: '2024-01-14', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ana' },
+  { id: '4', name: 'Sophie Dubois', language: 'fr', status: 'active', createdAt: '2024-01-08', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie' },
+  { id: '5', name: 'Pierre Martin', language: 'fr', status: 'active', createdAt: '2024-01-11', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Pierre' },
+  { id: '6', name: 'Hans Müller', language: 'de', status: 'active', createdAt: '2024-01-13', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hans' },
+  { id: '7', name: 'Anna Schmidt', language: 'de', status: 'archived', createdAt: '2024-01-15', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Anna' },
+  { id: '8', name: 'Marco Rossi', language: 'it', status: 'active', createdAt: '2024-01-09', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marco' },
+  { id: '9', name: 'Giulia Bianchi', language: 'it', status: 'active', createdAt: '2024-01-12', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Giulia' },
+  { id: '10', name: 'João Silva', language: 'pt', status: 'active', createdAt: '2024-01-11', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Joao' },
+  { id: '11', name: 'Maria Santos', language: 'pt', status: 'active', createdAt: '2024-01-14', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=MariaSantos' },
+  { id: '12', name: 'Yuki Tanaka', language: 'ja', status: 'active', createdAt: '2024-01-16', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Yuki' },
 ];
 
 export const characterIdeas = [

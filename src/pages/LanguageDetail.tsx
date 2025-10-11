@@ -140,16 +140,9 @@ export default function LanguageDetail() {
                       <Pencil className="h-4 w-4" />
                     </Button>
                   </div>
-                  <CardDescription>
-                    <Badge variant="outline" className="w-fit">{character.type}</Badge>
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Stories:</span>
-                      <span className="font-medium">{character.stories}</span>
-                    </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Status:</span>
                       <Badge variant={character.status === 'active' ? 'default' : 'secondary'}>
