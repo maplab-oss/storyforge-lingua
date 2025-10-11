@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { 
   BookOpen, 
   Users, 
@@ -77,6 +77,9 @@ interface AppLayoutProps {
 }
 
 export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppLayoutProps) => {
+  const location = useLocation();
+  const showLanguageSwitcher = location.pathname !== "/";
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -84,10 +87,12 @@ export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppL
         <div className="flex-1 flex flex-col">
           <header className="h-16 border-b border-border bg-card flex items-center justify-between px-6">
             <SidebarTrigger />
-            <LanguageSwitcher 
-              selectedLanguage={selectedLanguage} 
-              onLanguageChange={onLanguageChange} 
-            />
+            {showLanguageSwitcher && (
+              <LanguageSwitcher 
+                selectedLanguage={selectedLanguage} 
+                onLanguageChange={onLanguageChange} 
+              />
+            )}
           </header>
           <main className="flex-1 p-6 overflow-auto">
             {children}
