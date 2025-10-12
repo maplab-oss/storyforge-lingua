@@ -48,32 +48,20 @@ export default function Auth() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoginErrors({});
+    setIsLoading(true);
     
     try {
-      loginSchema.parse({ email: loginEmail, password: loginPassword });
-      setIsLoading(true);
-      await login(loginEmail, loginPassword);
+      await login('demo@example.com', 'password123');
       toast({
         title: 'Welcome back!',
         description: 'You have successfully logged in.',
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const errors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path[0]) {
-            errors[err.path[0].toString()] = err.message;
-          }
-        });
-        setLoginErrors(errors);
-      } else {
-        toast({
-          title: 'Login failed',
-          description: 'Invalid credentials. Please try again.',
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Login failed',
+        description: 'Could not log in. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
