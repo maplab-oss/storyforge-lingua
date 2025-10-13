@@ -7,7 +7,7 @@ export default function ChooseLanguage() {
   const navigate = useNavigate();
 
   const handleLanguageClick = (languageCode: string) => {
-    navigate(`/languages/${languageCode}/stories`);
+    navigate(`/languages/${languageCode}`);
   };
   return (
     <div className="space-y-6">
