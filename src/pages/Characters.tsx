@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Lightbulb, Image, Archive } from "lucide-react";
+import { Plus, Lightbulb, Image, Archive, ArchiveRestore } from "lucide-react";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +26,7 @@ export default function Characters() {
     return <Navigate to="/" replace />;
   }
   
+  const allCharacters = characters.filter(c => c.language === languageId);
   const activeCharacters = characters.filter(c => c.language === languageId && c.status === 'active');
   const archivedCharacters = characters.filter(c => c.language === languageId && c.status === 'archived');
   const filteredIdeas = characterIdeas.filter(i => i.language === languageId);
@@ -41,6 +42,13 @@ export default function Characters() {
     toast({
       title: "Character archived",
       description: `${characterName} has been archived`,
+    });
+  };
+
+  const handleUnarchiveCharacter = (characterId: string, characterName: string) => {
+    toast({
+      title: "Character restored",
+      description: `${characterName} has been restored to active`,
     });
   };
 
@@ -73,12 +81,67 @@ export default function Characters() {
         </Button>
       </div>
 
-      <Tabs defaultValue="active" className="w-full">
+      <Tabs defaultValue="all" className="w-full">
         <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
           <TabsTrigger value="active">Active</TabsTrigger>
           <TabsTrigger value="archived">Archived</TabsTrigger>
           <TabsTrigger value="ideas">Ideas</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="all" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {allCharacters.map((character) => (
+            <Card key={character.id} className="hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div 
+                    className="flex items-start gap-3 flex-1 cursor-pointer"
+                    onClick={() => navigate(`/languages/${character.language}/characters/${character.id}`)}
+                  >
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={character.avatar} alt={character.name} />
+                      <AvatarFallback>{character.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg">{character.name}</CardTitle>
+                      <CardDescription className="mt-1 flex items-center gap-2">
+                        <span className="uppercase text-xs font-semibold">{character.language}</span>
+                        <Badge variant={character.status === 'active' ? 'default' : 'secondary'}>
+                          {character.status}
+                        </Badge>
+                      </CardDescription>
+                    </div>
+                  </div>
+                  {character.status === 'active' ? (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleArchiveCharacter(character.id, character.name);
+                      }}
+                      title="Archive character"
+                    >
+                      <Archive className="h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUnarchiveCharacter(character.id, character.name);
+                      }}
+                      title="Restore character"
+                    >
+                      <ArchiveRestore className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+            </Card>
+          ))}
+        </TabsContent>
 
         <TabsContent value="active" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {activeCharacters.map((character) => (
@@ -119,23 +182,35 @@ export default function Characters() {
         <TabsContent value="archived" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {archivedCharacters.length > 0 ? (
             archivedCharacters.map((character) => (
-              <Card 
-                key={character.id} 
-                className="hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => navigate(`/languages/${character.language}/characters/${character.id}`)}
-              >
+              <Card key={character.id} className="hover:shadow-md transition-shadow">
                 <CardHeader>
-                  <div className="flex items-start gap-3">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src={character.avatar} alt={character.name} />
-                      <AvatarFallback>{character.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{character.name}</CardTitle>
-                      <CardDescription className="mt-1">
-                        <span className="uppercase text-xs font-semibold">{character.language}</span>
-                      </CardDescription>
+                  <div className="flex items-start justify-between">
+                    <div 
+                      className="flex items-start gap-3 flex-1 cursor-pointer"
+                      onClick={() => navigate(`/languages/${character.language}/characters/${character.id}`)}
+                    >
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={character.avatar} alt={character.name} />
+                        <AvatarFallback>{character.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <CardTitle className="text-lg">{character.name}</CardTitle>
+                        <CardDescription className="mt-1">
+                          <span className="uppercase text-xs font-semibold">{character.language}</span>
+                        </CardDescription>
+                      </div>
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUnarchiveCharacter(character.id, character.name);
+                      }}
+                      title="Restore character"
+                    >
+                      <ArchiveRestore className="h-4 w-4" />
+                    </Button>
                   </div>
                 </CardHeader>
               </Card>
