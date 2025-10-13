@@ -1,10 +1,24 @@
 export const languages = [
-  { id: 'es', name: 'Spanish', code: 'es', stories: 45, characters: 23, words: 1240, status: 'active' },
-  { id: 'fr', name: 'French', code: 'fr', stories: 38, characters: 19, words: 980, status: 'active' },
-  { id: 'de', name: 'German', code: 'de', stories: 12, characters: 8, words: 450, status: 'beta' },
-  { id: 'it', name: 'Italian', code: 'it', stories: 28, characters: 15, words: 890, status: 'active' },
-  { id: 'pt', name: 'Portuguese', code: 'pt', stories: 22, characters: 12, words: 720, status: 'active' },
-  { id: 'ja', name: 'Japanese', code: 'ja', stories: 8, characters: 6, words: 320, status: 'beta' },
+  { id: 'es', name: 'Spanish', code: 'es', stories: 45, characters: 23, words: 1240, status: 'active', features: { audioPlayback: true, transliteration: true, npcChat: true, stories: true } },
+  { id: 'fr', name: 'French', code: 'fr', stories: 38, characters: 19, words: 980, status: 'active', features: { audioPlayback: true, transliteration: true, npcChat: false, stories: false } },
+  { id: 'de', name: 'German', code: 'de', stories: 12, characters: 8, words: 450, status: 'beta', features: { audioPlayback: false, transliteration: true, npcChat: false, stories: true } },
+  { id: 'it', name: 'Italian', code: 'it', stories: 28, characters: 15, words: 890, status: 'active', features: { audioPlayback: true, transliteration: true, npcChat: true, stories: true } },
+  { id: 'pt', name: 'Portuguese', code: 'pt', stories: 22, characters: 12, words: 720, status: 'active', features: { audioPlayback: true, transliteration: false, npcChat: true, stories: true } },
+  { id: 'ja', name: 'Japanese', code: 'ja', stories: 8, characters: 6, words: 320, status: 'beta', features: { audioPlayback: false, transliteration: true, npcChat: false, stories: true } },
+];
+
+export const languageIssues = [
+  { id: '1', languageCode: 'es', title: 'Audio quality needs improvement', description: 'Some audio files have background noise', priority: 'medium', status: 'open' },
+  { id: '2', languageCode: 'es', title: 'Missing translations for new words', description: 'Last 50 words added need review', priority: 'low', status: 'in-progress' },
+  { id: '3', languageCode: 'fr', title: 'Stories feature blocked', description: 'Waiting for voice actor recordings', priority: 'high', status: 'open' },
+  { id: '4', languageCode: 'fr', title: 'NPC Chat responses inaccurate', description: 'Cultural context needs refinement', priority: 'high', status: 'open' },
+  { id: '5', languageCode: 'de', title: 'Audio playback not working', description: 'Need to record all audio files', priority: 'high', status: 'open' },
+  { id: '6', languageCode: 'de', title: 'Limited character variety', description: 'Only 8 characters available', priority: 'medium', status: 'in-progress' },
+  { id: '7', languageCode: 'it', title: 'Transliteration formatting', description: 'Stress marks not displaying correctly', priority: 'low', status: 'resolved' },
+  { id: '8', languageCode: 'pt', title: 'Transliteration missing', description: 'No transliteration system implemented yet', priority: 'high', status: 'open' },
+  { id: '9', languageCode: 'pt', title: 'Regional dialect support', description: 'Add Brazilian vs European Portuguese options', priority: 'medium', status: 'open' },
+  { id: '10', languageCode: 'ja', title: 'Audio recordings needed', description: 'All audio files pending', priority: 'high', status: 'open' },
+  { id: '11', languageCode: 'ja', title: 'Kanji rendering issues', description: 'Font compatibility problems on some devices', priority: 'medium', status: 'in-progress' },
 ];
 
 export const stories = [
