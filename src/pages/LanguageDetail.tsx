@@ -105,13 +105,13 @@ export default function LanguageDetail() {
         <TabsContent value="stories" className="space-y-4 mt-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Stories</h2>
-            <Button>
+            <Button onClick={() => navigate(`/languages/${languageId}/stories`)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Story
+              View All Stories
             </Button>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredStories.map((story) => (
+            {filteredStories.slice(0, 6).map((story) => (
               <Card 
                 key={story.id} 
                 className="hover:shadow-lg transition-shadow cursor-pointer"
@@ -146,33 +146,31 @@ export default function LanguageDetail() {
         <TabsContent value="characters" className="space-y-4 mt-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Characters</h2>
-            <Button>
+            <Button onClick={() => navigate(`/languages/${languageId}/characters`)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Character
+              View All Characters
             </Button>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCharacters.map((character) => (
-              <Card key={character.id} className="hover:shadow-lg transition-shadow">
+            {filteredCharacters.slice(0, 6).map((character) => (
+              <Card 
+                key={character.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate(`/languages/${languageId}/characters/${character.id}`)}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle>{character.name}</CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEditCharacter({ id: character.id, name: character.name })}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
+                    <Badge variant={character.status === 'active' ? 'default' : 'secondary'}>
+                      {character.status}
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Status:</span>
-                      <Badge variant={character.status === 'active' ? 'default' : 'secondary'}>
-                        {character.status}
-                      </Badge>
+                      <span className="text-muted-foreground">Language:</span>
+                      <span className="uppercase text-xs font-semibold">{character.language}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -210,13 +208,10 @@ export default function LanguageDetail() {
         <TabsContent value="words" className="space-y-4 mt-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Words</h2>
-            <div className="flex gap-2">
-              <Button variant="outline">Import</Button>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Word
-              </Button>
-            </div>
+            <Button onClick={() => navigate(`/languages/${languageId}/words`)}>
+              <Plus className="h-4 w-4 mr-2" />
+              View All Words
+            </Button>
           </div>
 
           <Input 
@@ -227,7 +222,7 @@ export default function LanguageDetail() {
           />
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredWords.map((word) => (
+            {filteredWords.slice(0, 6).map((word) => (
               <Card 
                 key={word.id} 
                 className="cursor-pointer hover:shadow-lg transition-shadow"
