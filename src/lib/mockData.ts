@@ -7,6 +7,34 @@ export const languages = [
   { id: 'ja', name: 'Japanese', code: 'ja', stories: 8, characters: 6, words: 320, status: 'beta' },
 ];
 
+export const languageFeatures = {
+  es: { audioPlayback: true, transliteration: true, npcChat: true, stories: true },
+  fr: { audioPlayback: true, transliteration: false, npcChat: true, stories: true },
+  de: { audioPlayback: false, transliteration: false, npcChat: false, stories: false },
+  it: { audioPlayback: true, transliteration: true, npcChat: true, stories: true },
+  pt: { audioPlayback: true, transliteration: true, npcChat: true, stories: true },
+  ja: { audioPlayback: true, transliteration: true, npcChat: true, stories: true },
+};
+
+export const languageIssues = {
+  es: [
+    { id: 1, title: "Missing audio for Story 3", description: "Audio files not uploaded yet", status: "open" },
+    { id: 2, title: "Character voices need review", description: "Some voices don't match character profiles", status: "open" },
+  ],
+  fr: [
+    { id: 3, title: "Transliteration accuracy", description: "Some words have incorrect phonetic guides", status: "resolved" },
+  ],
+  de: [
+    { id: 4, title: "No content available", description: "Need to add initial stories and characters", status: "open" },
+    { id: 5, title: "Voice actor needed", description: "Looking for native German speaker", status: "open" },
+  ],
+  it: [],
+  pt: [],
+  ja: [
+    { id: 6, title: "Limited content", description: "Need more beginner-friendly stories", status: "open" },
+  ],
+};
+
 export const stories = [
   { id: '1', title: 'La Aventura del Mercado', language: 'es', status: 'published', voice: 'Maria', words: 234, createdAt: '2024-01-15' },
   { id: '2', title: 'El Café Misterioso', language: 'es', status: 'draft', voice: 'Carlos', words: 189, createdAt: '2024-01-20' },
