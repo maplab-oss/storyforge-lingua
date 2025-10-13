@@ -1,3 +1,3 @@
-import ChooseLanguage from "./ChooseLanguage";
+import Languages from "./Languages";
 
-export default ChooseLanguage;
+export default Languages;

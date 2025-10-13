@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { languages } from "@/lib/mockData";
 import { useNavigate } from "react-router-dom";
 
-export default function ChooseLanguage() {
+export default function Languages() {
   const navigate = useNavigate();
 
   const handleLanguageClick = (languageCode: string) => {
@@ -12,8 +12,8 @@ export default function ChooseLanguage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Choose a Language</h1>
-        <p className="text-muted-foreground mt-2">Select a language to manage its content</p>
+        <h1 className="text-3xl font-bold text-foreground">Languages</h1>
+        <p className="text-muted-foreground mt-2">Manage all supported languages and their content</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
