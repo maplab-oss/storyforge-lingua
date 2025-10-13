@@ -1,30 +1,30 @@
 import { Plus, Lightbulb } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { characters, characterIdeas } from "@/lib/mockData";
+import { characters, characterIdeas, languages } from "@/lib/mockData";
 
-interface CharactersProps {
-  selectedLanguage: string;
-}
-
-export default function Characters({ selectedLanguage }: CharactersProps) {
+export default function Characters() {
   const navigate = useNavigate();
+  const { languageId } = useParams<{ languageId: string }>();
+
+  // Redirect if no language is selected
+  if (!languageId) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Validate language exists
+  const currentLanguage = languages.find(l => l.code === languageId);
+  if (!currentLanguage) {
+    return <Navigate to="/" replace />;
+  }
   
-  const activeCharacters = selectedLanguage === 'all' 
-    ? characters.filter(c => c.status === 'active')
-    : characters.filter(c => c.language === selectedLanguage && c.status === 'active');
-
-  const archivedCharacters = selectedLanguage === 'all'
-    ? characters.filter(c => c.status === 'archived')
-    : characters.filter(c => c.language === selectedLanguage && c.status === 'archived');
-
-  const filteredIdeas = selectedLanguage === 'all'
-    ? characterIdeas
-    : characterIdeas.filter(i => i.language === selectedLanguage);
+  const activeCharacters = characters.filter(c => c.language === languageId && c.status === 'active');
+  const archivedCharacters = characters.filter(c => c.language === languageId && c.status === 'archived');
+  const filteredIdeas = characterIdeas.filter(i => i.language === languageId);
 
   return (
     <div className="space-y-6">

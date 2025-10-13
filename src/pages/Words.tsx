@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { Upload, Archive, Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { words } from "@/lib/mockData";
+import { words, languages } from "@/lib/mockData";
 
-interface WordsProps {
-  selectedLanguage: string;
-}
-
-export default function Words({ selectedLanguage }: WordsProps) {
+export default function Words() {
   const navigate = useNavigate();
+  const { languageId } = useParams<{ languageId: string }>();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Redirect if no language is selected
+  if (!languageId) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Validate language exists
+  const currentLanguage = languages.find(l => l.code === languageId);
+  if (!currentLanguage) {
+    return <Navigate to="/" replace />;
+  }
   
-  const filteredWords = (selectedLanguage === 'all' 
-    ? words 
-    : words.filter(w => w.language === selectedLanguage))
+  const filteredWords = words
+    .filter(w => w.language === languageId)
     .filter(w => 
       w.word.toLowerCase().includes(searchQuery.toLowerCase()) ||
       w.translation.toLowerCase().includes(searchQuery.toLowerCase())

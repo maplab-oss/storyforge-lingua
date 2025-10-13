@@ -1,12 +1,13 @@
 import { ReactNode, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { 
   BookOpen, 
   Users, 
   Languages, 
   Database,
   Menu,
-  LogOut
+  LogOut,
+  Settings
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,19 +23,26 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
-
-const menuItems = [
-  { title: "Languages", url: "/", icon: Languages },
-  { title: "Stories", url: "/stories", icon: BookOpen },
-  { title: "Characters", url: "/characters", icon: Users },
-  { title: "Words", url: "/words", icon: Database },
-];
 
 function AppSidebarContent() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+  const { languageId } = useParams<{ languageId: string }>();
+  const location = useLocation();
+
+  const menuItems = languageId 
+    ? [
+        { title: "Choose Language", url: "/", icon: Languages },
+        { title: "Stories", url: `/languages/${languageId}/stories`, icon: BookOpen },
+        { title: "Characters", url: `/languages/${languageId}/characters`, icon: Users },
+        { title: "Words", url: `/languages/${languageId}/words`, icon: Database },
+        { title: "Manage Languages", url: "/manage-languages", icon: Settings },
+      ]
+    : [
+        { title: "Choose Language", url: "/", icon: Languages },
+        { title: "Manage Languages", url: "/manage-languages", icon: Settings },
+      ];
 
   return (
     <Sidebar collapsible="icon" className={collapsed ? "w-14" : "w-60"}>
@@ -75,14 +83,10 @@ function AppSidebarContent() {
 
 interface AppLayoutProps {
   children: ReactNode;
-  selectedLanguage: string;
-  onLanguageChange: (code: string) => void;
 }
 
-export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppLayoutProps) => {
-  const location = useLocation();
+export const AppLayout = ({ children }: AppLayoutProps) => {
   const { user, logout } = useAuth();
-  const showLanguageSwitcher = location.pathname !== "/" && !location.pathname.startsWith("/languages/");
 
   return (
     <SidebarProvider>
@@ -92,12 +96,6 @@ export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppL
           <header className="h-16 border-b border-border bg-card flex items-center justify-between px-6">
             <SidebarTrigger />
             <div className="flex items-center gap-4">
-              {showLanguageSwitcher && (
-                <LanguageSwitcher 
-                  selectedLanguage={selectedLanguage} 
-                  onLanguageChange={onLanguageChange} 
-                />
-              )}
               {user && (
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-muted-foreground">{user.email}</span>

@@ -1,26 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Lightbulb } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { stories, storyIdeas, voices } from "@/lib/mockData";
+import { stories, storyIdeas, voices, languages } from "@/lib/mockData";
 
-interface StoriesProps {
-  selectedLanguage: string;
-}
-
-export default function Stories({ selectedLanguage }: StoriesProps) {
+export default function Stories() {
   const navigate = useNavigate();
-  
-  const filteredStories = selectedLanguage === 'all' 
-    ? stories 
-    : stories.filter(s => s.language === selectedLanguage);
+  const { languageId } = useParams<{ languageId: string }>();
 
-  const filteredIdeas = selectedLanguage === 'all'
-    ? storyIdeas
-    : storyIdeas.filter(i => i.language === selectedLanguage);
+  // Redirect if no language is selected
+  if (!languageId) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Validate language exists
+  const currentLanguage = languages.find(l => l.code === languageId);
+  if (!currentLanguage) {
+    return <Navigate to="/" replace />;
+  }
+  
+  const filteredStories = stories.filter(s => s.language === languageId);
+  const filteredIdeas = storyIdeas.filter(i => i.language === languageId);
 
   return (
     <div className="space-y-6">
