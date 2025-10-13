@@ -39,7 +39,7 @@ function AppSidebarContent() {
   return (
     <Sidebar collapsible="icon" className={collapsed ? "w-14" : "w-60"}>
       <div className="p-4 border-b border-sidebar-border">
-        {!collapsed && <h2 className="text-lg font-semibold text-sidebar-foreground">LangContent CMS</h2>}
+        {!collapsed && <h2 className="text-lg font-semibold text-sidebar-foreground">LexiQuest CMS</h2>}
       </div>
       
       <SidebarContent>
@@ -100,8 +100,8 @@ export const AppLayout = ({ children, selectedLanguage, onLanguageChange }: AppL
               )}
               {user && (
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-muted-foreground">{user.name}</span>
-                  <Button variant="ghost" size="sm" onClick={logout} className="gap-2">
+                  <span className="text-sm text-muted-foreground">{user.email}</span>
+                  <Button variant="ghost" size="sm" onClick={() => logout()} className="gap-2">
                     <LogOut className="h-4 w-4" />
                     Logout
                   </Button>
