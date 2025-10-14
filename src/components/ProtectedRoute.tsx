@@ -1,8 +1,10 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { Button } from "./ui/button";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading, accessLevel, logout } = useAuth();
 
   if (loading) {
     return (
@@ -12,8 +14,23 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/auth" replace />;
+  if (!user) return <Navigate to="/auth" replace />;
+
+  if (!accessLevel) {
+    return (
+      <div>
+        <p>No access</p>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => logout()}
+          className="gap-2"
+        >
+          <LogOut className="h-4 w-4" />
+          Logout
+        </Button>
+      </div>
+    );
   }
 
   return <>{children}</>;
