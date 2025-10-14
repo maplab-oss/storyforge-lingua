@@ -123,21 +123,13 @@ export default function LanguageDetail() {
 
       <Tabs defaultValue="stories" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="stories" disabled={!features.stories}>Stories</TabsTrigger>
+          <TabsTrigger value="stories">Stories</TabsTrigger>
           <TabsTrigger value="characters">Characters</TabsTrigger>
           <TabsTrigger value="words">Words</TabsTrigger>
         </TabsList>
 
         <TabsContent value="stories" className="mt-6">
-          {features.stories ? (
-            <Stories selectedLanguage={languageId || 'all'} />
-          ) : (
-            <Card>
-              <CardContent className="pt-6">
-                <p className="text-center text-muted-foreground">Stories feature is disabled for this language</p>
-              </CardContent>
-            </Card>
-          )}
+          <Stories selectedLanguage={languageId || 'all'} />
         </TabsContent>
 
         <TabsContent value="characters" className="mt-6">
