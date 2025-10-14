@@ -21,7 +21,7 @@ export default function Languages() {
           <Card 
             key={lang.id} 
             className="hover:shadow-lg transition-all cursor-pointer hover:scale-105"
-            onClick={() => handleLanguageClick(lang.code)}
+            onClick={() => handleLanguageClick(lang.id)}
           >
             <CardHeader>
               <div className="flex items-start justify-between">

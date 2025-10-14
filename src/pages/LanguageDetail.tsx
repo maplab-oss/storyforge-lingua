@@ -5,17 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Settings } from "lucide-react";
-import { languages, languageFeatures, languageIssues } from "@/lib/mockData";
+import {  languageFeatures, languageIssues } from "@/lib/mockData";
 import { useState } from "react";
 import Stories from "./Stories";
 import Characters from "./Characters";
 import Words from "./Words";
+import { sysLangs } from "@maplab-oss/static-config";
 
 export default function LanguageDetail() {
   const { languageId } = useParams();
   const navigate = useNavigate();
   
-  const language = languages.find(lang => lang.code === languageId);
+  const language = sysLangs.find(lang => lang.id === languageId);
   const [features, setFeatures] = useState(languageFeatures[languageId as keyof typeof languageFeatures] || {
     audioPlayback: false,
     transliteration: false,
