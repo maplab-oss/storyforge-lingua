@@ -1,11 +1,4 @@
-export const languages = [
-  { id: 'es', name: 'Spanish', code: 'es', stories: 45, characters: 23, words: 1240, status: 'active' },
-  { id: 'fr', name: 'French', code: 'fr', stories: 38, characters: 19, words: 980, status: 'active' },
-  { id: 'de', name: 'German', code: 'de', stories: 12, characters: 8, words: 450, status: 'beta' },
-  { id: 'it', name: 'Italian', code: 'it', stories: 28, characters: 15, words: 890, status: 'active' },
-  { id: 'pt', name: 'Portuguese', code: 'pt', stories: 22, characters: 12, words: 720, status: 'active' },
-  { id: 'ja', name: 'Japanese', code: 'ja', stories: 8, characters: 6, words: 320, status: 'beta' },
-];
+
 
 export const languageFeatures = {
   es: { audioPlayback: true, transliteration: true, npcChat: true, stories: true },
