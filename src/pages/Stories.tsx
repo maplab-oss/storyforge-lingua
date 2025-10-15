@@ -2,50 +2,49 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { lolliBaseUrl } from "@/lib/config";
 import { supabase } from "@/lib/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
 import { Lightbulb, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import z from "zod";
+import z, { ZodSchema } from "zod";
 
 interface StoriesProps {
   selectedLanguage: string;
 }
 
-export default function Stories({ selectedLanguage }: StoriesProps) {
-  const { data } = useQuery({
-    queryKey: ["stories", "th"],
+const getQueryOptions = <S extends ZodSchema>(path: string, schema: S) => {
+  return {
+    queryKey: [path, "th"],
     queryFn: async () => {
-      const response = await fetch(
-        "https://api.lexiquest.app/admin/get-stories?langId=th",
-        {
-          headers: {
-            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
-          },
+      const response = await fetch(`${lolliBaseUrl}${path}?langId=th`, {
+        headers: {
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
         },
-      );
+      });
 
       const json = await response.json();
-
-      const schema = z
-        .object({
-          id: z.string(),
-          title: z.string(),
-          deleted: z.boolean(),
-        })
-        .array();
-
-      console.log({ json });
-
       return schema.parse(json) as z.infer<typeof schema>;
     },
-  });
+  };
+};
 
-  console.log({ data });
+const storySchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  deleted: z.boolean(),
+});
+
+const storiesSchema = storySchema.array();
+
+export default function Stories({ selectedLanguage }: StoriesProps) {
+  const navigate = useNavigate();
+
+  const { data } = useQuery(
+    getQueryOptions("/admin/get-stories", storiesSchema),
+  );
 
   if (!data) return <p>Loading...</p>;
-
-  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
