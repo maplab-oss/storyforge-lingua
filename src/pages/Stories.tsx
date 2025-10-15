@@ -24,7 +24,12 @@ const getQueryOptions = <S extends ZodSchema>(path: string, schema: S) => {
       });
 
       const json = await response.json();
-      return schema.parse(json) as z.infer<typeof schema>;
+
+      try {
+        return schema.parse(json) as z.infer<typeof schema>;
+      } catch (err) {
+        console.error(`zod error ${err}`);
+      }
     },
   };
 };
@@ -32,7 +37,7 @@ const getQueryOptions = <S extends ZodSchema>(path: string, schema: S) => {
 const storySchema = z.object({
   id: z.string(),
   title: z.string(),
-  deleted: z.boolean(),
+  deleted: z.boolean().optional(),
 });
 
 const storiesSchema = storySchema.array();
