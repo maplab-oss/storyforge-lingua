@@ -1,33 +1,60 @@
-import { useState } from "react";
-import { Plus, Lightbulb } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { stories, storyIdeas, voices } from "@/lib/mockData";
+import { supabase } from "@/lib/supabaseClient";
+import { useQuery } from "@tanstack/react-query";
+import { Lightbulb, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import z from "zod";
 
 interface StoriesProps {
   selectedLanguage: string;
 }
 
 export default function Stories({ selectedLanguage }: StoriesProps) {
-  const navigate = useNavigate();
-  
-  const filteredStories = selectedLanguage === 'all' 
-    ? stories 
-    : stories.filter(s => s.language === selectedLanguage);
+  const { data } = useQuery({
+    queryKey: ["stories", "th"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://api.lexiquest.app/admin/get-stories?langId=th",
+        {
+          headers: {
+            Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          },
+        },
+      );
 
-  const filteredIdeas = selectedLanguage === 'all'
-    ? storyIdeas
-    : storyIdeas.filter(i => i.language === selectedLanguage);
+      const json = await response.json();
+
+      const schema = z
+        .object({
+          id: z.string(),
+          title: z.string(),
+          deleted: z.boolean(),
+        })
+        .array();
+
+      console.log({ json });
+
+      return schema.parse(json) as z.infer<typeof schema>;
+    },
+  });
+
+  console.log({ data });
+
+  if (!data) return <p>Loading...</p>;
+
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Stories</h1>
-          <p className="text-muted-foreground mt-2">Manage your language learning stories</p>
+          <p className="text-muted-foreground mt-2">
+            Manage your language learning stories
+          </p>
         </div>
         <Button className="gap-2">
           <Plus className="h-4 w-4" />
@@ -43,51 +70,63 @@ export default function Stories({ selectedLanguage }: StoriesProps) {
         </TabsList>
 
         <TabsContent value="published" className="space-y-4">
-          {filteredStories.filter(s => s.status === 'published').map((story) => (
-            <Card 
-              key={story.id} 
-              className="hover:shadow-md transition-shadow cursor-pointer"
-              onClick={() => navigate(`/languages/${story.language}/stories/${story.id}`)}
-            >
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle>{story.title}</CardTitle>
-                    <CardDescription className="mt-2 flex items-center gap-4">
-                      <span className="uppercase text-xs font-semibold">{story.language}</span>
-                      <span>Voice: {story.voice}</span>
-                      <span>{story.words} words</span>
-                    </CardDescription>
+          {data
+            .filter((s) => !s.deleted)
+            .map((story) => (
+              <Card
+                key={story.id}
+                className="hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() =>
+                  navigate(`/languages/${selectedLanguage}/stories/${story.id}`)
+                }
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle>{story.title}</CardTitle>
+                      {/* <CardDescription className="mt-2 flex items-center gap-4">
+                        <span className="uppercase text-xs font-semibold">
+                          {story.language}
+                        </span>
+                        <span>Voice: {story.voice}</span>
+                        <span>{story.words} words</span>
+                      </CardDescription> */}
+                    </div>
+                    <Badge variant="default">Published</Badge>
                   </div>
-                  <Badge variant="default">Published</Badge>
-                </div>
-              </CardHeader>
-            </Card>
-          ))}
+                </CardHeader>
+              </Card>
+            ))}
         </TabsContent>
 
         <TabsContent value="draft" className="space-y-4">
-          {filteredStories.filter(s => s.status === 'draft').map((story) => (
-            <Card 
-              key={story.id} 
-              className="hover:shadow-md transition-shadow cursor-pointer"
-              onClick={() => navigate(`/languages/${story.language}/stories/${story.id}`)}
-            >
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle>{story.title}</CardTitle>
-                    <CardDescription className="mt-2 flex items-center gap-4">
-                      <span className="uppercase text-xs font-semibold">{story.language}</span>
-                      <span>Voice: {story.voice}</span>
-                      <span>{story.words} words</span>
-                    </CardDescription>
+          {data
+            .filter((s) => !s.deleted)
+            .map((story) => (
+              <Card
+                key={story.id}
+                className="hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() =>
+                  navigate(`/languages/${selectedLanguage}/stories/${story.id}`)
+                }
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle>{story.title}</CardTitle>
+                      {/* <CardDescription className="mt-2 flex items-center gap-4">
+                        <span className="uppercase text-xs font-semibold">
+                          {story.language}
+                        </span>
+                        <span>Voice: {story.voice}</span>
+                        <span>{story.words} words</span>
+                      </CardDescription> */}
+                    </div>
+                    <Badge variant="secondary">Draft</Badge>
                   </div>
-                  <Badge variant="secondary">Draft</Badge>
-                </div>
-              </CardHeader>
-            </Card>
-          ))}
+                </CardHeader>
+              </Card>
+            ))}
         </TabsContent>
 
         <TabsContent value="ideas" className="space-y-4">
@@ -97,19 +136,6 @@ export default function Stories({ selectedLanguage }: StoriesProps) {
               Generate Ideas
             </Button>
           </div>
-          {filteredIdeas.map((idea) => (
-            <Card key={idea.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{idea.idea}</p>
-                    <p className="text-xs text-muted-foreground mt-1 uppercase">{idea.language}</p>
-                  </div>
-                  <Button size="sm">Convert to Story</Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
         </TabsContent>
       </Tabs>
     </div>

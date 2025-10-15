@@ -1,23 +1,25 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "../lib/supabaseClient";
 
 const AccessLevelSchema = z.enum(["ADMIN", "SUPER_ADMIN"]).optional();
 
-const UserMetadataSchema = z.object({
-  access_level: AccessLevelSchema,
-}).passthrough().optional(); // Allow other fields to pass through, and make the whole object optional
+const UserMetadataSchema = z
+  .object({
+    role: AccessLevelSchema,
+  })
+  .passthrough()
+  .optional(); // Allow other fields to pass through, and make the whole object optional
 
 type AccessLevel = z.infer<typeof AccessLevelSchema>;
-type UserMetadata = z.infer<typeof UserMetadataSchema>;
 
 const extractAccessLevel = (user: User | null): AccessLevel => {
   if (!user?.user_metadata) return undefined;
-  
+
   try {
     const validatedMetadata = UserMetadataSchema.parse(user.user_metadata);
-    return validatedMetadata?.access_level;
+    return validatedMetadata?.role;
   } catch {
     // If validation fails, return undefined
     return undefined;
