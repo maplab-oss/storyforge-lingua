@@ -1,22 +1,29 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Save } from "lucide-react";
-import { stories, voices } from "@/lib/mockData";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { stories, voices } from "@/lib/mockData";
+import { ArrowLeft, Save } from "lucide-react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function StoryDetail() {
   const { languageId, storyId } = useParams();
   const navigate = useNavigate();
-  
-  const story = stories.find(s => s.id === storyId && s.language === languageId);
-  
+
+  const story = stories.find(
+    (s) => s.id === storyId && s.language === languageId,
+  );
+
   const [formData, setFormData] = useState({
     title: story?.title || "",
     voice: story?.voice || "",
@@ -28,10 +35,16 @@ export default function StoryDetail() {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" onClick={() => navigate(`/languages/${languageId}`)}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => navigate(`/languages/${languageId}`)}
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-3xl font-bold text-foreground">Story Not Found</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            Story Not Found
+          </h1>
         </div>
       </div>
     );
@@ -46,17 +59,23 @@ export default function StoryDetail() {
     });
   };
 
-  const filteredVoices = voices.filter(v => v.language === languageId);
+  const filteredVoices = voices.filter((v) => v.language === languageId);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" onClick={() => navigate(`/languages/${languageId}`)}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => navigate(`/languages/${languageId}`)}
+        >
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
           <h1 className="text-3xl font-bold text-foreground">Edit Story</h1>
-          <p className="text-muted-foreground mt-1">Make changes to your story</p>
+          <p className="text-muted-foreground mt-1">
+            Make changes to your story
+          </p>
         </div>
       </div>
 
@@ -71,7 +90,9 @@ export default function StoryDetail() {
               <Input
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 placeholder="Enter story title"
                 required
               />
@@ -81,7 +102,9 @@ export default function StoryDetail() {
               <Label htmlFor="voice">Voice</Label>
               <Select
                 value={formData.voice}
-                onValueChange={(value) => setFormData({ ...formData, voice: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, voice: value })
+                }
               >
                 <SelectTrigger id="voice">
                   <SelectValue placeholder="Select a voice" />
@@ -102,7 +125,12 @@ export default function StoryDetail() {
                 id="words"
                 type="number"
                 value={formData.words}
-                onChange={(e) => setFormData({ ...formData, words: parseInt(e.target.value) || 0 })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    words: parseInt(e.target.value) || 0,
+                  })
+                }
                 placeholder="Enter word count"
                 required
               />
@@ -112,7 +140,12 @@ export default function StoryDetail() {
               <Label htmlFor="status">Status</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value) => setFormData({ ...formData, status: value as "draft" | "published" })}
+                onValueChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    status: value as "draft" | "published",
+                  })
+                }
               >
                 <SelectTrigger id="status">
                   <SelectValue />
@@ -129,7 +162,11 @@ export default function StoryDetail() {
                 <Save className="h-4 w-4 mr-2" />
                 Save Changes
               </Button>
-              <Button type="button" variant="outline" onClick={() => navigate(`/languages/${languageId}`)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => navigate(`/languages/${languageId}`)}
+              >
                 Cancel
               </Button>
             </div>
@@ -148,7 +185,9 @@ export default function StoryDetail() {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Current Status:</span>
-            <Badge variant={story.status === 'published' ? 'default' : 'secondary'}>
+            <Badge
+              variant={story.status === "published" ? "default" : "secondary"}
+            >
               {story.status}
             </Badge>
           </div>

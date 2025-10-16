@@ -47,20 +47,12 @@ export default function Languages() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm">
-                {/* <div className="flex justify-between">
-                  <span className="text-muted-foreground">Stories:</span>
-                  <span className="font-medium">{lang.stories}</span>
-                </div> */}
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Characters:</span>
                   <span className="font-medium">
                     {npcsForLanguage(lang.id).length ?? 0}
                   </span>
                 </div>
-                {/* <div className="flex justify-between">
-                  <span className="text-muted-foreground">Words:</span>
-                  <span className="font-medium">{lang.words}</span>
-                </div> */}
               </div>
             </CardContent>
           </Card>

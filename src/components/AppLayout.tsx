@@ -1,8 +1,17 @@
-import { ReactNode } from "react";
-import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { capitalize } from "lodash";
+import { ChevronDown, LogOut } from "lucide-react";
+import { ReactNode } from "react";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -17,26 +26,40 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
         <h1 className="text-xl font-semibold text-foreground">LexiQuest CMS</h1>
         {user && (
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">{user.email}</span>
-            {accessLevel && (
-              <span className={`text-xs px-2 py-1 rounded font-medium ${
-                accessLevel === 'SUPER_ADMIN' 
-                  ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' 
-                  : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-              }`}>
-                {capitalize(accessLevel.replace('_', " "))}
-              </span>
-            )}
-            <Button variant="ghost" size="sm" onClick={() => logout()} className="gap-2">
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
+            <LanguageSwitcher />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2 px-3 py-2 h-10">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">{user.email}</span>
+                    {accessLevel && (
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                          accessLevel === "SUPER_ADMIN"
+                            ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                            : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                        }`}
+                      >
+                        {capitalize(accessLevel.replace("_", " "))}
+                      </span>
+                    )}
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => logout()} className="gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         )}
       </header>
-      <main className="flex-1 p-6 overflow-auto">
-        {children}
-      </main>
+      <main className="flex-1 p-6 overflow-auto">{children}</main>
     </div>
   );
 };
