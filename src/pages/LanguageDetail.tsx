@@ -70,115 +70,119 @@ export default function LanguageDetail() {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Settings className="h-5 w-5 text-primary" />
-              <CardTitle>Feature Toggles</CardTitle>
-            </div>
-            <CardDescription>
-              Control which features are available for this language
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">Audio Playback</p>
-                <p className="text-sm text-muted-foreground">
-                  Enable audio buttons in stories and words
-                </p>
-              </div>
-              <Switch
-                checked={features.audioPlayback}
-                onCheckedChange={() => handleFeatureToggle("audioPlayback")}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">Transliteration</p>
-                <p className="text-sm text-muted-foreground">
-                  Show phonetic guides for scripts
-                </p>
-              </div>
-              <Switch
-                checked={features.transliteration}
-                onCheckedChange={() => handleFeatureToggle("transliteration")}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">NPC Chat</p>
-                <p className="text-sm text-muted-foreground">
-                  Enable AI chat assistant
-                </p>
-              </div>
-              <Switch
-                checked={features.npcChat}
-                onCheckedChange={() => handleFeatureToggle("npcChat")}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">Stories</p>
-                <p className="text-sm text-muted-foreground">
-                  Enable story content and navigation
-                </p>
-              </div>
-              <Switch
-                checked={features.stories}
-                onCheckedChange={() => handleFeatureToggle("stories")}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Issues</CardTitle>
-            <CardDescription>Known issues for this language</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {issues.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No issues reported
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {issues.map((issue) => (
-                  <div
-                    key={issue.id}
-                    className="border-l-2 border-primary pl-4 py-2"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="font-medium text-foreground">
-                        {issue.title}
-                      </p>
-                      <Badge
-                        variant={
-                          issue.status === "open" ? "destructive" : "secondary"
-                        }
-                      >
-                        {issue.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {issue.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="stories" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+      <Tabs defaultValue="features" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="features">Features</TabsTrigger>
+          <TabsTrigger value="issues">Issues</TabsTrigger>
           <TabsTrigger value="stories">Stories</TabsTrigger>
           <TabsTrigger value="characters">Characters</TabsTrigger>
           <TabsTrigger value="words">Words</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="features" className="mt-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Settings className="h-5 w-5 text-primary" />
+                <CardTitle>Feature Toggles</CardTitle>
+              </div>
+              <CardDescription>
+                Control which features are available for this language
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-foreground">Audio Playback</p>
+                  <p className="text-sm text-muted-foreground">
+                    Enable audio buttons in stories and words
+                  </p>
+                </div>
+                <Switch
+                  checked={features.audioPlayback}
+                  onCheckedChange={() => handleFeatureToggle("audioPlayback")}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-foreground">Transliteration</p>
+                  <p className="text-sm text-muted-foreground">
+                    Show phonetic guides for scripts
+                  </p>
+                </div>
+                <Switch
+                  checked={features.transliteration}
+                  onCheckedChange={() => handleFeatureToggle("transliteration")}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-foreground">NPC Chat</p>
+                  <p className="text-sm text-muted-foreground">
+                    Enable AI chat assistant
+                  </p>
+                </div>
+                <Switch
+                  checked={features.npcChat}
+                  onCheckedChange={() => handleFeatureToggle("npcChat")}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-foreground">Stories</p>
+                  <p className="text-sm text-muted-foreground">
+                    Enable story content and navigation
+                  </p>
+                </div>
+                <Switch
+                  checked={features.stories}
+                  onCheckedChange={() => handleFeatureToggle("stories")}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="issues" className="mt-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Issues</CardTitle>
+              <CardDescription>Known issues for this language</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {issues.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No issues reported
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {issues.map((issue) => (
+                    <div
+                      key={issue.id}
+                      className="border-l-2 border-primary pl-4 py-2"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="font-medium text-foreground">
+                          {issue.title}
+                        </p>
+                        <Badge
+                          variant={
+                            issue.status === "open" ? "destructive" : "secondary"
+                          }
+                        >
+                          {issue.status}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {issue.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="stories" className="mt-6">
           <Stories selectedLanguage={languageId} />
